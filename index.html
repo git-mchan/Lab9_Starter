@@ -69,39 +69,154 @@
     </form>
 
     <section id="error-btns">
-      <button>Console Log</button>
-      <button>Console Error</button>
-      <button>Console Count</button>
-      <button>Console Warn</button>
-      <button>Console Assert</button>
-      <button>Console Clear</button>
-      <button>Console Dir</button>
-      <button>Console dirxml</button>
-      <button>Console Group Start</button>
-      <button>Console Group End</button>
-      <button>Console Table</button>
-      <button>Start Timer</button>
-      <button>End Timer</button>
-      <button>Console Trace</button>
-      <button>Trigger a Global Error</button>
+      <button onclick=consolelog()>Console Log</button>
+      <button onclick=consoleerror()>Console Error</button>
+      <button onclick=consolecount()>Console Count</button>
+      <button onclick=consolewarn()>Console Warn</button>
+      <button onclick=consoleassert()>Console Assert</button>
+      <button onclick=consoleclear()>Console Clear</button>
+      <button onclick=consoledir()>Console Dir</button>
+      <button onclick=consoledirxml()>Console dirxml</button>
+      <button onclick=consolegroupstart()>Console Group Start</button>
+      <button onclick=consolegroupend()>Console Group End</button>
+      <button onclick=consoletable()>Console Table</button>
+      <button onclick=consoletime()>Start Timer</button>
+      <button onclick=consoletimeend()>End Timer</button>
+      <button onclick=consoletrace()>Console Trace</button>
+      <button onclick=trigger()>Trigger a Global Error</button>
     </section>
   </main>
 
+  <script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
+  <script>
+    window.TrackJS && TrackJS.install({ 
+      token: "4e10d4b6be594e30b37d4f4cec3c63e0"
+      // for more configuration options, see https://docs.trackjs.com
+    });
+  </script>
+                          
   <script>
     let form = document.querySelector('form');
     form.addEventListener('submit', e => {
       e.preventDefault();
-      let output = document.querySelector('output');
-      let firstNum = document.querySelector('#first-num').value;
-      let secondNum = document.querySelector('#second-num').value;
-      let operator = document.querySelector('#operator').value;
-      output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
+      try{
+        let output = document.querySelector('output');
+        let firstNum = document.querySelector('#first-num').value;
+        let secondNum = document.querySelector('#second-num').value;
+        let operator = document.querySelector('#operator').value;
+        if(Number.isNaN(firstNum) || Number.isNaN(secondNum)){
+          throw new boom("it's over for you");
+        }
+        output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
+        
+      }
+      catch(err){
+        console.log("you're done");
+        console.log("you're over, why are you putting letters in a mathematical calculator");
+        alert(err.message);
+      }
+      finally{
+        
+      }
     });
 
     let errorBtns = Array.from(document.querySelectorAll('#error-btns > button'));
 
     // Start your code here
     // You may move this JS to another file if you wish
+    function consolelog(){
+      console.log('Console Log Demo');
+    }
+    function consoleerror(){
+      console.error('Console Error Demo');
+    }
+    function consolecount(){
+      console.count('Console Button: ');
+    }
+    function consolewarn(){
+      console.warn('Console Warn Button');
+    }
+    function consoleassert(){
+      let number = 2;
+      let number2 = 3;
+      let errorMsg = 'The number does not equal 3';
+      console.assert(number==number2, {number, errorMsg});
+    }
+    function consoleclear(){
+      console.clear();
+    }
+    function consoledir(){
+      let obj = {"I am in":"pain", "please":"help"};
+      console.dir(obj);
+    }
+    function consoledirxml(){
+      let xmlObject = {
+    "my":
+    {
+        "back":"pain",
+        "neck":"pain"
+    }
+    };
+      console.dirxml(xmlObject);
+    }
+    function consolegroupstart(){
+      let label = 'console.group';
+      console.group(label);
+    }
+    function consolegroupend(){
+      console.groupEnd();
+    }
+    function consoletable(){
+      console.table(
+      [{
+        Human: 23,
+        name: 'Software Engineering',
+        num: '118'
+      },
+      {
+        Human: 134,
+        name: 'Human Bio',
+        num: '530'
+      },
+      {
+        Human: 78,
+        name: 'Marine Bio',
+        num: '740'
+      }
+      ]);
+    }
+    function consoletime(){
+      console.time();
+      for (let i = 0; i < 100000; i++) {
+      let square = i ** 2;
+      }
+    }
+    function consoletimeend(){
+      console.timeEnd();
+    }
+    function consoletrace(){
+      function deep(){
+        function deeper(){
+          function deepest(){
+            console.trace();
+          }
+          deepest();
+        }
+        deeper();
+      }
+      deep();
+    }
+    function trigger(){
+      TrackJS.track('Testing TrackJS!');
+      return death;
+    }
+    class boom extends Error{
+      constructor(message){
+        super(message);
+        this.name = "boom";
+      }
+
+    }
   </script>
 </body>
 
